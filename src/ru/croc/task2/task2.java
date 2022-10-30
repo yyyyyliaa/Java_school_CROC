@@ -1,4 +1,4 @@
-package ru.croc.task2;
+package ru.croc.Task2;
 
 public class Task2 {
 
