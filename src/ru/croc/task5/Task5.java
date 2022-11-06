@@ -23,10 +23,10 @@ interface Movable{
 }
 
 abstract class Figure implements Movable{
-    Point Point1 = new Point();
+    Point Point1;
 
     public Figure(int x1, int y1){
-        Point1.setCoord(x1, y1);
+        Point1 = new Point(x1, y1);
     }
 
     @Override
@@ -56,12 +56,11 @@ class Circle extends Figure{
 }
 
 class Rectangle extends Figure{
-    Point Point2 = new Point();
+    Point Point2;
 
     public Rectangle(int x1, int y1, int x2, int y2){
         super(x1, y1);
-        Point2.x = x2;
-        Point2.y = y2;
+        Point2 = new Point(x2, y2);
     }
 
     @Override

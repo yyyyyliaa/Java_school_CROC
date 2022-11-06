@@ -18,10 +18,10 @@ class Point{
 }
 
 abstract class Figure{
-    Point Point1 = new Point();
+    Point Point1;
 
     public Figure(double x1, double y1){
-        Point1.setCoord(x1, y1);
+        Point1 = new Point(x1, y1);
     }
     @Override
     public abstract String toString();
@@ -43,12 +43,11 @@ class Circle extends Figure{
 }
 
 class Rectangle extends Figure{
-    Point Point2 = new Point();
+    Point Point2;
 
     public Rectangle(double x1, double y1, double x2, double y2){
         super(x1, y1);
-        Point2.x = x2;
-        Point2.y = y2;
+        Point2 = new Point(x2, y2);
     }
 
     @Override
