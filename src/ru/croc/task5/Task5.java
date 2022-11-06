@@ -32,6 +32,8 @@ abstract class Figure implements Movable{
     @Override
     public abstract String toString();
 
+    public abstract boolean searchPoint(int x, int y);
+
 }
 
 class Circle extends Figure{
@@ -51,6 +53,15 @@ class Circle extends Figure{
     public void move(int dx, int dy){
         Point1.x += dx;
         Point1.y += dy;
+    }
+
+    @Override
+    public boolean searchPoint(int x, int y){
+        if(((x<=(this.Point1.x + radius))&&(x>=(this.Point1.x - radius)))&&
+        ((y<=(this.Point1.y + radius))&&(y>=(this.Point1.y - radius)))){
+            return true;
+        }
+        else return false;
     }
 
 }
@@ -75,6 +86,15 @@ class Rectangle extends Figure{
 
         Point2.x += dx;
         Point2.y += dy;
+    }
+
+    @Override
+    public boolean searchPoint(int x, int y){
+        if(((x<=(Math.max(this.Point1.x, this.Point2.x)))&&(x>=(Math.min(this.Point1.x, this.Point2.x))))
+        &&((y<=(Math.max(this.Point1.y, this.Point2.y)))&&(y>=(Math.min(this.Point1.y, this.Point2.y))))){
+            return true;
+        }
+        else return false;
     }
 }
 
@@ -120,7 +140,7 @@ class AnnotatedImage {
 
     public Annotation findByPoint(int x, int y){
         for(Annotation tmp : annotations){
-            if((tmp.f.Point1.x == x)&&(tmp.f.Point1.y == y)){
+            if(tmp.f.searchPoint(x, y)==true){
                 return tmp;
             }
         }
@@ -147,7 +167,7 @@ public class Task5{
 
         AnnotatedImage im = new AnnotatedImage("D:/Games", a1, a2);
 
-        System.out.println("Find by point result: " + im.findByPoint(100, 100));
+        System.out.println("Find by point result: " + im.findByPoint(300, 300));
         System.out.println("Find by lable result: " + im.findByLabel("pryamoug"));
 
         c.move(5, 5); 
