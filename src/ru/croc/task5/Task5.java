@@ -57,14 +57,14 @@ class Circle extends Figure{
 
     @Override
     public boolean searchPoint(int x, int y){
-        if(((x<=(this.Point1.x + radius))&&(x>=(this.Point1.x - radius)))&&
-        ((y<=(this.Point1.y + radius))&&(y>=(this.Point1.y - radius)))){
+        if(Math.sqrt(Math.pow(x-this.Point1.x, 2)+(Math.pow(y-this.Point1.y, 2)))<=this.radius){
             return true;
         }
         else return false;
     }
 
 }
+
 
 class Rectangle extends Figure{
     Point Point2;
@@ -167,7 +167,7 @@ public class Task5{
 
         AnnotatedImage im = new AnnotatedImage("D:/Games", a1, a2);
 
-        System.out.println("Find by point result: " + im.findByPoint(300, 300));
+        System.out.println("Find by point result: " + im.findByPoint(110, 110));
         System.out.println("Find by lable result: " + im.findByLabel("pryamoug"));
 
         c.move(5, 5); 
