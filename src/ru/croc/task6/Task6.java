@@ -17,7 +17,7 @@ public class Task6{
             if(source.charAt(i) == '/' && source.charAt(i+1)=='*'){
                 if (flag == 0){
                     flag = 1;
-                    i+=2;
+                    i++;
                 }
             }
             else if(source.charAt(i) == '*' && source.charAt(i+1)=='/'){
@@ -29,10 +29,10 @@ public class Task6{
             else if(source.charAt(i) == '/' && source.charAt(i+1)=='/'){
                 if (flag == 0) {
                     flag = 2;
-                    i+=2;
+                    i++;
                 }
             }
-            else if(source.charAt(i)== '\n'){
+            else if(source.charAt(i) == '\n'){
                 if (flag == 2) 
                     flag = 0;
             }
