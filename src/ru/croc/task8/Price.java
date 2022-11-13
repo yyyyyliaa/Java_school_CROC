@@ -1,4 +1,5 @@
 package ru.croc.task8;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
