@@ -16,14 +16,18 @@
  */
 package ru.croc.task7;
 public class Task7{
+   public static boolean legalHorseMove(int end, int end1, int k1, int k2, int k3) {
+      return (end==k1)&&((end1==k2)||(end1 == k3));
+   }
+
    public static void horseMove(ChessPosition s, ChessPosition... c) throws IllegalMoveException{
       ChessPosition start = s;
       for(ChessPosition i:c){
          ChessPosition end = i;
-         if(((end.x==start.x+2)&&((end.y==start.y+1)||(end.y==start.y-1)))
-            ||((end.x==start.x-2)&&((end.y==start.y+1)||(end.y==start.y-1)))
-            ||((end.y==start.y+2)&&((end.x==start.x-1)||(end.x==start.x+1)))
-            ||((end.y==start.y-2)&&((end.x==start.x-1)||(end.x==start.x+1)))){
+         if(legalHorseMove(end.x, end.y, start.x+2, start.y+1, start.y-1)
+            ||(legalHorseMove(end.x, end.y, start.x-2, start.y+1, start.y-1))
+            ||(legalHorseMove(end.y, end.x, start.y+2, start.x-1, start.x+1))
+            ||(legalHorseMove(end.y, end.x, start.y-2, start.x-1, start.x+1))){
                start = i;
          }
          else{
@@ -32,6 +36,8 @@ public class Task7{
       }
       System.out.println("OK");
   }
+
+   
     
    public static void main(String[] args) {
 
