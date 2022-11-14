@@ -10,33 +10,39 @@ import java.nio.file.Paths;
 
 public class Task6{
 
+    public static enum flag{
+        NO_COMMENT,
+        SINGLE_LINE_COMMENT,
+        MULTILINE_COMMENT
+    }
+
     public static String removeJavaComments(String source){  //flag == 0 - не комментарий
-        String res = null;                                   //flag == 1 - многострочный комментарий
-        int flag = 0;                                        //flag == 2 - однострочный комментарий
+        String res = "";                                   //flag == 1 - многострочный комментарий
+        flag f = flag.NO_COMMENT;                                        //flag == 2 - однострочный комментарий
         for(int i = 0; i<source.length(); i++){
             if(source.charAt(i) == '/' && source.charAt(i+1)=='*'){
-                if (flag == 0){
-                    flag = 1;
+                if (f == flag.NO_COMMENT){
+                    f = flag.SINGLE_LINE_COMMENT;
                     i++;
                 }
             }
             else if(source.charAt(i) == '*' && source.charAt(i+1)=='/'){
-                if(flag == 1){
-                    flag = 0;
+                if(f == flag.SINGLE_LINE_COMMENT){
+                    f = flag.NO_COMMENT;
                     i+=2;
                 }
             }
             else if(source.charAt(i) == '/' && source.charAt(i+1)=='/'){
-                if (flag == 0) {
-                    flag = 2;
+                if (f == flag.NO_COMMENT) {
+                    f = flag.MULTILINE_COMMENT;
                     i++;
                 }
             }
             else if(source.charAt(i) == '\n'){
-                if (flag == 2) 
-                    flag = 0;
+                if (f == flag.MULTILINE_COMMENT) 
+                    f = flag.NO_COMMENT;
             }
-            if(flag == 0){
+            if(f == flag.NO_COMMENT){
                 res+=source.charAt(i);
             }
         }
