@@ -1,7 +1,7 @@
 package ru.croc.task7;
 
 public class ChessPosition {
-    static String s = "abcdefgh";
+    static StringBuilder s = new StringBuilder("abcdefgh");
     String chessName;
     int x;
     int y;
@@ -34,10 +34,7 @@ public class ChessPosition {
 
         public static ChessPosition parse(String position) throws IllegalPositionException {
             ChessPosition res = new ChessPosition();
-            int x = -1;
-            for(int i = 0; i<s.length(); i++){
-                if(s.charAt(i)==position.charAt(0)) x = i;
-            }
+            int x = s.indexOf(Character.toString(position.charAt((0))));
             int y = Character.getNumericValue(position.charAt(1))-1;
             try{
                 res = new ChessPosition(x, y);
