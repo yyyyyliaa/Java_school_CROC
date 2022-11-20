@@ -14,21 +14,25 @@
 package ru.croc.task10;
 
 import java.util.Random;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Task10 {
     public static void main(String[] args) {
         String[] names = {"Yulia", "Anna", "Sergey", "Roman", "Ekaterina", "Nastya", "Lera", "Denis", "Veronika", "Alexandr"};
-        Lot painting = new Lot(0, 5);
-        System.out.println(painting.durationTargeting + " " + painting.timeOfStart);
+
+        Lot painting = new Lot(0, 30);
+    
         final Random random = new Random();
+
         for(int i = 0; i<10; i++){
             int rate = random.nextInt(10000);
             if(rate<painting.getPrice()) continue;
+
             final Thread t = new Thread(new User(names[i], painting, rate));
-            LocalTime now = LocalTime.now();
-            int timeOfStart = now.getSecond();
-            if(timeOfStart-painting.timeOfStart>painting.durationTargeting) break;
+
+            LocalDateTime now = LocalDateTime.now();
+
+            if(now.isAfter(painting.endOfRates)) break;
             System.out.println(names[i] + " user made a rate " + rate);
             t.start();
             try{
