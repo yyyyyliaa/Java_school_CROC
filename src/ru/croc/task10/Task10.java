@@ -13,9 +13,30 @@
 
 package ru.croc.task10;
 
+import java.util.Random;
+import java.time.LocalTime;
+
 public class Task10 {
     public static void main(String[] args) {
-        
+        String[] names = {"Yulia", "Anna", "Sergey", "Roman", "Ekaterina", "Nastya", "Lera", "Denis", "Veronika", "Alexandr"};
+        Lot painting = new Lot(0, 5);
+        System.out.println(painting.durationTargeting + " " + painting.timeOfStart);
+        final Random random = new Random();
+        for(int i = 0; i<10; i++){
+            int rate = random.nextInt(10000);
+            final Thread t = new Thread(new User(names[i], painting, rate));
+            LocalTime now = LocalTime.now();
+            int timeOfStart = now.getSecond();
+            if(timeOfStart-painting.timeOfStart>painting.durationTargeting) break;
+            System.out.println(names[i] + " user made a rate " + rate);
+            t.start();
+            try{
+                t.sleep(2000);
+            }catch(InterruptedException e) {
+                break;
+            }
+        }
+        System.out.println("Winner: " + painting.getUsername());
     }
     
 

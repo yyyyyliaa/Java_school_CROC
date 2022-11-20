@@ -1,24 +1,42 @@
 package ru.croc.task10;
 
+import java.time.LocalTime;
+
 public class Lot {
     private int price = 0;
     private String username;
-    private int timeOfEnd;
+    public long timeOfStart;
+    public long durationTargeting;
 
-    public Lot(int price, String username, int timeOfEnd){
+    public Lot(int price, long durationTargeting){
         if(price>=0) this.price = price;
-        if(!username.equals("")) this.username = username;
-        this.timeOfEnd = timeOfEnd;
+        this.durationTargeting = durationTargeting;
+        LocalTime now = LocalTime.now();
+        this.timeOfStart = now.getSecond();
     }
 
-    public void rates(int price, String username){
-        if(price>this.price && timeOfEnd!=0){
-            this.price = price;
-            this.username = username;
+    synchronized void rates(int price, String username){
+        LocalTime now = LocalTime.now();
+        long timeOfRates = now.getSecond();
+        System.out.println(timeOfRates + " start rate");
+        if(timeOfRates>=timeOfStart && timeOfRates<59){
+            if(timeOfRates-timeOfStart<=durationTargeting){
+                if(price>this.price){
+                    this.price = price;
+                    this.username = username;
+                }
+            }
+            else{
+                System.out.println("End time");
+            }
         }
     }
 
     public String getUsername(){
         return this.username;
+    }
+
+    public int getPrice(){
+        return this.price;
     }
 }
