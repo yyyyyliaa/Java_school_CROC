@@ -6,57 +6,27 @@
 
 package ru.croc.task9;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class Task9 {
-    private static String alphabet = "abcdefghigklmnopqrstuvwxyz";
-    private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
-
-    private static String toHexString(byte[] bytes) {
-        StringBuilder hex = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            hex.append(HEX_DIGITS[(b & 0xff) >> 4]);
-            hex.append(HEX_DIGITS[b & 0x0f]);
-        }
-        return hex.toString();
-    }
-
-    public static String hashPassword(String password) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        digest.update(password.getBytes());
-        byte[] bytes = digest.digest();
-        return toHexString(bytes);
-    }
-
-    public static void pickUpPassword(int position, StringBuilder result, String pattern){
-        if (position == 7){
-            String testHash = hashPassword(result.toString());
-            if(testHash.equals(pattern)){
-                System.out.println("Your password:" + result.toString());
-            }
-        } 
-        else{
-            for (int i = 0; i<alphabet.length(); i++){
-                if(result.length()>position){
-                    result.deleteCharAt(position);
-                }
-                result.insert(position, alphabet.charAt(i)); 
-                pickUpPassword(position+1, result, pattern);
-            }
-        }
-    }
+    public static String alphabet = "abcdefghigklmnopqrstuvwxyz";
     public static void main(String[] args) {
         // int countOfThreads = Integer.parseInt(args[0]);
+        int countOfThreads = 4;
         // String passwordHash = "40682260CC011947FC2D0B1A927138C5";
-        String tHash = hashPassword("aaaaaaa");
+        Password p = new Password();
+        String tHash = p.hashPassword("abcaaac");
        
-        StringBuilder result = new StringBuilder();
-        pickUpPassword(0, result, tHash);
+        // StringBuilder result = new StringBuilder();
+        // pickUpPassword(0, result, tHash);
+        for(int i = 0; i< countOfThreads; i++){
+            int start = i*(alphabet.length()/countOfThreads);
+            int limit;
+            if(i==countOfThreads-1){
+                limit = alphabet.length();
+            } else {
+                limit = (i+1)*(alphabet.length()/countOfThreads);
+            }
+            Thread t = new Thread(new MyThread(0, tHash, start, limit));
+            t.start();
+        }
     }
 }
