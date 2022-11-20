@@ -24,6 +24,7 @@ public class Task10 {
         final Random random = new Random();
         for(int i = 0; i<10; i++){
             int rate = random.nextInt(10000);
+            if(rate<painting.getPrice()) continue;
             final Thread t = new Thread(new User(names[i], painting, rate));
             LocalTime now = LocalTime.now();
             int timeOfStart = now.getSecond();
