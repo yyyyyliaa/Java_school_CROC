@@ -9,11 +9,11 @@ package ru.croc.task9;
 public class Task9 {
     public static String alphabet = "abcdefghigklmnopqrstuvwxyz";
     public static void main(String[] args) {
-        // int countOfThreads = Integer.parseInt(args[0]);
-        int countOfThreads = 4;
+        int countOfThreads = Integer.parseInt(args[0]);
+        // int countOfThreads = 4;
         // String passwordHash = "40682260CC011947FC2D0B1A927138C5";
         Password p = new Password();
-        String tHash = p.hashPassword("abcaaac");
+        String tHash = p.hashPassword(args[1]);
        
         // StringBuilder result = new StringBuilder();
         // pickUpPassword(0, result, tHash);
