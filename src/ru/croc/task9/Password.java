@@ -33,7 +33,7 @@ public class Password {
     public static int flag = 0;
     public StringBuilder result = new StringBuilder();
 
-    synchronized void pickUpPassword(int position, String pattern,int start, int limit){
+    public static void pickUpPassword(StringBuilder result, int position, String pattern,int start, int limit){
         if (position == 7){
             String testHash = hashPassword(result.toString());
             if(testHash.equals(pattern)){
@@ -46,8 +46,8 @@ public class Password {
                 if(result.length()>position){
                     result.deleteCharAt(position);
                 }
-                result.insert(position, alphabet.charAt(i)); 
-                pickUpPassword(position+1, pattern, start, limit);
+                result.append(alphabet.charAt(i)); 
+                pickUpPassword(result, position+1, pattern, 0, alphabet.length());
                 if(flag==1) return;
                 
             }

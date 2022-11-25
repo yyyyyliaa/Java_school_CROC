@@ -9,22 +9,24 @@ package ru.croc.task9;
 public class Task9 {
     public static String alphabet = "abcdefghigklmnopqrstuvwxyz";
     public static void main(String[] args) {
-        int countOfThreads = Integer.parseInt(args[0]);
-        // int countOfThreads = 4;
+        // int countOfThreads = Integer.parseInt(args[0]);
+        int countOfThreads = 22;
         // String passwordHash = "40682260CC011947FC2D0B1A927138C5";
-        Password p = new Password();
-        String tHash = p.hashPassword(args[1]);
+        //String passwordHash = args[1];
+        // Password p = new Password();
+        String tHash = Password.hashPassword("aabbbbv");
        
         // StringBuilder result = new StringBuilder();
         // pickUpPassword(0, result, tHash);
         for(int i = 0; i< countOfThreads; i++){
             int start = i*(alphabet.length()/countOfThreads);
             int limit;
-            if(i==countOfThreads-1){
+            if(i == countOfThreads - 1){
                 limit = alphabet.length();
             } else {
                 limit = (i+1)*(alphabet.length()/countOfThreads);
             }
+            // StringBuilder result = new StringBuilder();
             Thread t = new Thread(new MyThread(0, tHash, start, limit));
             t.start();
         }
