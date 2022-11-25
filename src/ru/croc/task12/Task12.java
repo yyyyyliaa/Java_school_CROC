@@ -14,11 +14,11 @@ public class Task12 {
                 "Follow me in Instagram!!! @yyyyyliaa",
                 "I hate cats"
         };
-        String[] swearWordsArray = {
+        String[] wordsArray = {
                 "Fuck", "shit", "hate cats"
         };
         List<String> comments = new LinkedList<>(Arrays.asList(commentsArray));
-        Set<String> blackList = new HashSet<>(Arrays.asList(swearWordsArray));
+        Set<String> blackList = new HashSet<>(Arrays.asList(wordsArray));
         BlackListFilter f = new FilterComments();
         f.filterComments(comments, blackList);
         for (String comment : comments) {
