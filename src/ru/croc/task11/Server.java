@@ -1,75 +1,45 @@
 package ru.croc.task11;
 
-import java.net.*; 
-import java.io.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-
-public class Server{
+public class Server {
 
     private ServerSocket serverSocket;
 
-    public Server(ServerSocket serverSocket){
+    public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
-    public void startServer() throws IOException{
-        while(!serverSocket.isClosed()){
-            Socket socket = serverSocket.accept();
-            System.out.println("New user connected");
-            ClientThread clientThread = new ClientThread(socket); 
+    public void startServer() {
 
-            Thread t = new Thread(clientThread);
-            t.start();
+        try {
+            while (!serverSocket.isClosed()) {
+                Socket socket = serverSocket.accept();
+                System.out.println("A new client has connected!");
+                ClientThread clientThread = new ClientThread(socket);
+                Thread t = new Thread(clientThread);
+                t.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void closeServerSocket() {
+        try {
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void closeServerSocket() throws IOException{
-        if(serverSocket != null){
-            serverSocket.close();
-        }
-    }
-
-
-
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(8000);
+        System.out.println("Connected");
         Server server = new Server(serverSocket);
-        server.startServer(); 
-        // System.out.println("Connected");
-        
-        // Socket clientSocket =  serverSocket.accept();
-
-        // OutputStreamWriter writer = 
-        //     new OutputStreamWriter(
-        //         clientSocket.getOutputStream());
-
-        
-        // BufferedReader reader = 
-        //     new BufferedReader(
-        //         new InputStreamReader(
-        //             clientSocket.getInputStream()));
-
-
-        // String username = reader.readLine();
-        // String inMessage;
-        // while(true){
-        //     inMessage = reader.readLine();
-        //     if(inMessage.equals("/stop")){
-        //         writer.write("Chat stopped" + "\n");
-        //         writer.flush();
-        //         break;
-        //     }
-        //     else{
-        //         String message3 = username + ": " + inMessage;
-        //         writer.write(message3 + "\n");
-        //         writer.flush();
-        //     }
-        // }
-
-        // writer.close();
-        // reader.close();
-        // clientSocket.close();
-        // serverSocket.close();
-
+        server.startServer();
     }
 }
