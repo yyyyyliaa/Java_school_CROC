@@ -26,12 +26,5 @@ public class Task9 {
             t[i] = new Thread(new Password(begin, end, tHash));
             t[i].start();
         }
-        for(int i = 0; i<countOfThreads; i++){
-            try{
-                t[i].join();
-            }catch(InterruptedException e){
-                    e.printStackTrace();
-            }
-        }
     }
 }
