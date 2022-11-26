@@ -36,11 +36,6 @@ public class Task10 {
             if(now.isAfter(painting.endOfRates)) break;
             System.out.println(name + " user made a rate " + rate);
             t.start();
-            try{
-                t.sleep(2000);
-            }catch(InterruptedException e) {
-                break;
-            }
         }
 
         System.out.println("Winner: " + painting.getUsername());
