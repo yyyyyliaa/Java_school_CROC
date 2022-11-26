@@ -1,57 +1,40 @@
 package ru.croc.task9;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+public class Password implements Runnable{
+    public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-public class Password {
+    private long start;
+    private long end;
+    private String patternHash;
+    private static volatile int flag = 0;
+    public static int passwordLength = 7;
 
-    public static String alphabet = "abcdefghigklmnopqrstuvwxyz";
-    private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
-    
-
-    private static String toHexString(byte[] bytes) {
-        StringBuilder hex = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            hex.append(HEX_DIGITS[(b & 0xff) >> 4]);
-            hex.append(HEX_DIGITS[b & 0x0f]);
-        }
-        return hex.toString();
+    public Password(long start, long end, String patternHash){
+        this.start = start;
+        this.end = end;
+        this.patternHash = patternHash;
     }
 
-    public static String hashPassword(String password) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+    public String newPasswordCombination(long combination){
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i<passwordLength; i++){
+            res.insert(i, alphabet.charAt((int)combination%alphabet.length()));
+            combination/=alphabet.length();
         }
-        digest.update(password.getBytes());
-        byte[] bytes = digest.digest();
-        return toHexString(bytes);
+        return res.toString();
     }
 
-    public static int flag = 0;
-    public StringBuilder result = new StringBuilder();
-
-    public static void pickUpPassword(StringBuilder result, int position, String pattern,int start, int limit){
-        if (position == 7){
-            String testHash = hashPassword(result.toString());
-            if(testHash.equals(pattern)){
-                System.out.println("Your password:" + result.toString());
-                flag = 1;
-            }
-        } 
-        else{
-            for (int i = start; i<limit; i++){
-                if(result.length()>position){
-                    result.deleteCharAt(position);
+    public void run(){
+        for(long i = start; i < end; i++){
+            if (flag == 1) return;
+            else{
+                String password = newPasswordCombination(i);
+                String hashPassword = Hash.hashPassword(password);
+                if(hashPassword.equals(patternHash)){
+                    System.out.println("Your password:" + password);
+                    flag = 1;
                 }
-                result.append(alphabet.charAt(i)); 
-                pickUpPassword(result, position+1, pattern, 0, alphabet.length());
-                if(flag==1) return;
-                
             }
         }
     }
-    
 }

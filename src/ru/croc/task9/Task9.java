@@ -7,28 +7,31 @@
 package ru.croc.task9;
 
 public class Task9 {
-    public static String alphabet = "abcdefghigklmnopqrstuvwxyz";
+    public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
     public static void main(String[] args) {
         // int countOfThreads = Integer.parseInt(args[0]);
-        int countOfThreads = 22;
+        int countOfThreads = 30;
+        int passwordLength = 7;
         // String passwordHash = "40682260CC011947FC2D0B1A927138C5";
         //String passwordHash = args[1];
-        // Password p = new Password();
-        String tHash = Password.hashPassword("aabbbbv");
-       
-        // StringBuilder result = new StringBuilder();
-        // pickUpPassword(0, result, tHash);
-        for(int i = 0; i< countOfThreads; i++){
-            int start = i*(alphabet.length()/countOfThreads);
-            int limit;
-            if(i == countOfThreads - 1){
-                limit = alphabet.length();
-            } else {
-                limit = (i+1)*(alphabet.length()/countOfThreads);
+        String tHash = Hash.hashPassword("afkvrqe");
+
+        long countPasswordCombinations = (int)Math.pow(passwordLength, alphabet.length());
+        Thread[] t = new Thread[countOfThreads];
+
+        for(int i = 0; i<countOfThreads; i++){
+            long begin = (countPasswordCombinations*i)/countOfThreads;
+            long end = (countPasswordCombinations*(i+1))/countOfThreads;
+            t[i] = new Thread(new Password(begin, end, tHash));
+            t[i].start();
+        }
+        for(int i = 0; i<countOfThreads; i++){
+            try{
+                t[i].join();
+            }catch(InterruptedException e){
+                    e.printStackTrace();
             }
-            // StringBuilder result = new StringBuilder();
-            Thread t = new Thread(new MyThread(0, tHash, start, limit));
-            t.start();
         }
     }
 }
