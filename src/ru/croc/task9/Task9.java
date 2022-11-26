@@ -10,20 +10,22 @@ public class Task9 {
     public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     public static void main(String[] args) {
-        // int countOfThreads = Integer.parseInt(args[0]);
-        int countOfThreads = 30;
         int passwordLength = 7;
-        // String passwordHash = "40682260CC011947FC2D0B1A927138C5";
+        
+        // int countOfThreads = Integer.parseInt(args[0]);
         //String passwordHash = args[1];
-        String tHash = Hash.hashPassword("afkvrqe");
+
+        int countOfThreads = 30;
+        String passwordHash = Hash.hashPassword("afkvrqe");
+        System.out.println("Password hash: " + passwordHash);
 
         long countPasswordCombinations = (int)Math.pow(passwordLength, alphabet.length());
         Thread[] t = new Thread[countOfThreads];
 
         for(int i = 0; i<countOfThreads; i++){
-            long begin = (countPasswordCombinations*i)/countOfThreads;
+            long start = (countPasswordCombinations*i)/countOfThreads;
             long end = (countPasswordCombinations*(i+1))/countOfThreads;
-            t[i] = new Thread(new Password(begin, end, tHash));
+            t[i] = new Thread(new MyThread(start, end, passwordHash));
             t[i].start();
         }
     }
