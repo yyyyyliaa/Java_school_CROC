@@ -13,8 +13,11 @@ public class Task13 {
         System.out.print("Enter the numbers of the films you have watched: ");
         Scanner sc = new Scanner(System.in);
         String history = sc.nextLine();
-        sc.close();
 
-        rec.getRecomendations(history);
+        User user = new User(history);
+
+        rec.getRecomendations(user);
+        
+        sc.close();
     }
 }

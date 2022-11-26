@@ -1,7 +1,6 @@
 package ru.croc.task13;
 
 import java.util.*;
-import java.io.*;
 
 public class Recomendations {
 
@@ -9,71 +8,38 @@ public class Recomendations {
     private List<String[]> viewHistory = new LinkedList<>();
 
     public Recomendations(String filmsPath, String viewHistoryPath){
-        try{
-            File f = new File(viewHistoryPath);
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-            
-            String history = br.readLine();
-            while(history!=null){
-                viewHistory.add(history.split(","));
-                history = br.readLine();
-            }
-            br.close();
-            fr.close();
-
-
-
-            f = new File(filmsPath);
-            fr = new FileReader(f);
-            br = new BufferedReader(fr);
-
-            String line = br.readLine();
-            while(line!=null){
-                String[] film = line.split(",");
-                films.put(Integer.parseInt(film[0]), film[1]);
-                line = br.readLine();
-            }
-            br.close();
-            fr.close();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.films = GetData.setFilms(filmsPath);
+        this.viewHistory = GetData.setViewHistory(viewHistoryPath);
     }
 
-    public void getRecomendations(String history){
-        String[] viewHistoryUser = history.split(",");
-        List<String[]> suitableUsers = new LinkedList<>();
-        Set<String> suitableFilms = new HashSet<>();
-        for(String[] his : viewHistory){
+    public Set<String> getSuitableFilms(String[] viewHistoryUser){
+        Set<String> res = new HashSet<>();
+        for(String[] history : viewHistory){
             int countCoincidences = 0;
             for(int i = 0; i < viewHistoryUser.length; i++){
-                for (int j = 0; j<his.length; j++){
-                    if(viewHistoryUser[i].equals(his[j])) countCoincidences++;
+                for (int j = 0; j<history.length; j++){
+                    if(viewHistoryUser[i].equals(history[j])) countCoincidences++;
                 }
             }
             if (countCoincidences>=(viewHistoryUser.length/2)) {
-                suitableUsers.add(his);
-                for(int i = 0; i<his.length; i++){
-                    int flag = 0;
+                for(int i = 0; i<history.length; i++){
+                    Boolean filmViewed = false;
                     for(int j = 0; j<viewHistoryUser.length; j++){
-                        if(his[i].equals(viewHistoryUser[j])){
-                            flag = 1;
-                            break;
+                        if(history[i].equals(viewHistoryUser[j])){
+                            filmViewed = true;
                         }
                     }
-                    if(flag==0) suitableFilms.add(his[i]);
+                    if(!filmViewed) res.add(history[i]);
                 }
             }
         }
+        return res;
+    }
 
-
+    public int getBestMatches(Set<String> suitableFilms){
         String bestMatches = "0";
         int maxCountView = 0;
+
         Iterator<String> it = suitableFilms.iterator();
         while (it.hasNext()){
             String cur = it.next();
@@ -89,8 +55,18 @@ public class Recomendations {
             }
         }
 
-        if(!bestMatches.equals("0"))
-            System.out.println(films.get(Integer.parseInt(bestMatches)));
+        return Integer.parseInt(bestMatches);
+    }
+
+    public void getRecomendations(User user){
+        String[] viewHistoryUser = user.getViewHistory();
+        Set<String> suitableFilms = getSuitableFilms(viewHistoryUser);
+
+
+        int bestMatches = getBestMatches(suitableFilms);
+
+        if(bestMatches!=0)
+            System.out.println(films.get(bestMatches));
     }
     
 }
