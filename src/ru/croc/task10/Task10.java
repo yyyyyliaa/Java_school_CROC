@@ -18,22 +18,23 @@ import java.time.LocalDateTime;
 
 public class Task10 {
     public static void main(String[] args) {
-        String[] names = {"Yulia", "Anna", "Sergey", "Roman", "Ekaterina", "Nastya", "Lera", "Denis", "Veronika", "Alexandr"};
+        String[] names = {"Yulia", "Anna", "Sergey", "Roman", "Ekaterina", "Nastya", "Lera", "Denis", "Veronika", "Alex"};
 
-        Lot painting = new Lot(0, 30);
-    
-        final Random random = new Random();
+        Lot painting = new Lot(0, 10);
 
-        for(int i = 0; i<10; i++){
-            int rate = random.nextInt(10000);
-            if(rate<painting.getPrice()) continue;
-
-            final Thread t = new Thread(new User(names[i], painting, rate));
-
+        while(LocalDateTime.now().isBefore(painting.endOfRates)){
             LocalDateTime now = LocalDateTime.now();
+            final Random random = new Random();
+            int rate = random.nextInt(20000);
+            if(rate<=painting.getPrice()) continue;
+
+            String name = names[random.nextInt(10)%10];
+
+            final Thread t = new Thread(new User(name, painting, rate));
+
 
             if(now.isAfter(painting.endOfRates)) break;
-            System.out.println(names[i] + " user made a rate " + rate);
+            System.out.println(name + " user made a rate " + rate);
             t.start();
             try{
                 t.sleep(2000);
@@ -41,9 +42,8 @@ public class Task10 {
                 break;
             }
         }
+
         System.out.println("Winner: " + painting.getUsername());
     }
-    
-
     
 }
