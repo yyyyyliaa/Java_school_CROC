@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class Task13 {
 
     public static void main(String[] args) {
-        String filmsPath = "/Users/yyyyyliaa/CROC/src/ru/croc/task13/films.txt";
-        String vievHistoryPath = "/Users/yyyyyliaa/CROC/src/ru/croc/task13/viewHistory.txt";
+        String filmsPath = "src/ru/croc/task13/films.txt";
+        String vievHistoryPath = "src/ru/croc/task13/viewHistory.txt";
 
         Recomendations rec = new Recomendations(filmsPath, vievHistoryPath);
 
@@ -16,7 +16,7 @@ public class Task13 {
 
         User user = new User(history);
 
-        rec.getRecomendations(user);
+        rec.pickUpRecomendations(user);
         
         sc.close();
     }

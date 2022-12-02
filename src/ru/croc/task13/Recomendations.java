@@ -8,8 +8,8 @@ public class Recomendations {
     private List<String[]> viewHistory = new LinkedList<>();
 
     public Recomendations(String filmsPath, String viewHistoryPath){
-        this.films = GetData.setFilms(filmsPath);
-        this.viewHistory = GetData.setViewHistory(viewHistoryPath);
+        this.films = ReceivingData.getFilms(filmsPath);
+        this.viewHistory = ReceivingData.getViewHistory(viewHistoryPath);
     }
 
     public Set<String> getSuitableFilms(String[] viewHistoryUser){
@@ -58,7 +58,7 @@ public class Recomendations {
         return Integer.parseInt(bestMatches);
     }
 
-    public void getRecomendations(User user){
+    public void pickUpRecomendations(User user){
         String[] viewHistoryUser = user.getViewHistory();
         Set<String> suitableFilms = getSuitableFilms(viewHistoryUser);
 
@@ -67,6 +67,7 @@ public class Recomendations {
 
         if(bestMatches!=0)
             System.out.println(films.get(bestMatches));
+        else System.out.println("We don't have a suitable recommendation for you :(");
     }
     
 }

@@ -3,9 +3,9 @@ package ru.croc.task13;
 import java.util.*;
 import java.io.*;
 
-public class GetData {
+public abstract class ReceivingData {
 
-    public static Map<Integer, String> setFilms(String filmsPath){
+    public static Map<Integer, String> getFilms(String filmsPath){
         Map<Integer, String> res = new HashMap<>();
         try{
 
@@ -30,7 +30,7 @@ public class GetData {
         return res;
     }
 
-    public static List<String[]> setViewHistory(String viewHistoryPath){
+    public static List<String[]> getViewHistory(String viewHistoryPath){
         List<String[]> res = new LinkedList<>();
         try{
 
