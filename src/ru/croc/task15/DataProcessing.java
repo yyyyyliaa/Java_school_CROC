@@ -4,52 +4,46 @@ import java.util.*;
 
 public class DataProcessing {
     static void divideByAge(ArrayList<String> ageGroups, ArrayList<String> personsData){
-        Map<String, Integer> persons = new HashMap<>();
-        for(String s : personsData){
-            String[] tmp = s.split(",");
-            persons.put(tmp[0], Integer.parseInt(tmp[1]));
-        } 
-        
-        Map<String, Integer> group = new HashMap<>();
-        for(int i = 0; i<=ageGroups.size(); i++){
-            int maxAge;
-            int minAge;
 
-            if(i == 0){
-                maxAge = Integer.parseInt(ageGroups.get(i));
-                minAge = 0;
-            } 
-            else if(i == ageGroups.size()){
-                maxAge = 123;
-                minAge = Integer.parseInt(ageGroups.get(ageGroups.size()-1)) + 1;
-            }
-            else{
-                maxAge = Integer.parseInt(ageGroups.get(i));
-                minAge = Integer.parseInt(ageGroups.get(i-1)) + 1;
-            }
-            Iterator<Map.Entry<String, Integer>> it = persons.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry<String, Integer> entry = it.next();
-                if(entry.getValue()<=maxAge && entry.getValue()>=minAge){
-                    group.put(entry.getKey(), entry.getValue());
+        List<AgeGroup> groups = createAgeGroups(ageGroups);
+
+        for(String s : personsData){
+            String[] personInfo = s.split(",");
+            for (AgeGroup group : groups){
+                if(Integer.parseInt(personInfo[1])>=group.getMinAge() && Integer.parseInt(personInfo[1])<=group.getMaxAge()){
+                    group.addPerson(personInfo[0], Integer.parseInt(personInfo[1]));
                 }
             }
-            if(!group.isEmpty()){
-                printGroup(minAge, maxAge, group);
-                group.clear();
-            }
+
+        } 
+
+        printGroup(groups);
+    }
+
+    public static void printGroup(List<AgeGroup> groups){
+        for(AgeGroup group : groups){
+            if(!group.getPersons().isEmpty()) 
+                System.out.println(group.toString() + "\n");
         }
     }
 
-    public static void printGroup(int minAge, int maxAge, Map<String, Integer> group){
-        Iterator<Map.Entry<String, Integer>> it = group.entrySet().iterator();
-        System.out.print(minAge + "-" + maxAge + ": ");
-            it = group.entrySet().iterator();
-            while(it.hasNext()){
-                Map.Entry<String, Integer> entry = it.next();
-                System.out.print(entry.getKey() + "(" + entry.getValue() + "), ");           
+    public  static List<AgeGroup> createAgeGroups(ArrayList<String> ageGroups){
+        List<AgeGroup> groups = new ArrayList<>();
+        for (int i = 0; i<ageGroups.size(); i++){
+            AgeGroup cur;
+            if(i == 0){
+                cur = new AgeGroup(0, Integer.parseInt(ageGroups.get(i)));
             }
-            System.out.println("\n");
+            else if (i == ageGroups.size()){
+                cur = new AgeGroup(Integer.parseInt(ageGroups.get(ageGroups.size()-1)) + 1, 123);
+            }
+            else{
+                cur = new AgeGroup(Integer.parseInt(ageGroups.get(i-1)) + 1, Integer.parseInt(ageGroups.get(i)));
+            }
+            groups.add(cur);
+        }
+
+        return groups;
     }
     
 }
