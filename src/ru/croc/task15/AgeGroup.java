@@ -6,7 +6,7 @@ public class AgeGroup {
     int maxAge;
     int minAge;
 
-    Map<String, Integer> persons = new HashMap<>();
+    Set<Person> persons = new HashSet<>();
 
     public AgeGroup(int minAge, int maxAge){
         this.maxAge = maxAge;
@@ -21,23 +21,20 @@ public class AgeGroup {
         return minAge;
     }
 
-    public Map<String, Integer> getPersons(){
-        return persons;
+    public void addPerson(Person p){
+        persons.add(p);
     }
 
-    public void addPerson(String name, Integer age){
-        persons.put(name, age);
+    public boolean groupIsEmpty(){
+        return persons.isEmpty();
     }
 
     @Override
     public String toString(){
         String result = minAge + "-" + maxAge + ":";
-        Iterator<Map.Entry<String, Integer>> it = persons.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry<String, Integer> entry = it.next();
-            result += entry.getKey() + "(" + entry.getValue() + "), ";
+        for(Person p : persons){
+            result+= p.getFIO() + "(" + p.getAge() + "),";
         }
-
         return result;
     }
 }
