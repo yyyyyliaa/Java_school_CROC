@@ -10,24 +10,18 @@ public abstract class DBHandler {
             final Statement statement = connection.createStatement();
 
             statement.execute("CREATE TABLE IF NOT EXISTS PRODUCTS(ART VARCHAR PRIMARY KEY, NAME VARCHAR, PRICE INTEGER);");
-            statement.execute("CREATE TABLE IF NOT EXISTS ORDERS(NUM INTEGER PRIMARY KEY, USERNAME VARCHAR, " +
+            statement.execute("CREATE TABLE IF NOT EXISTS ORDERS(NUM INTEGER, USERNAME VARCHAR, " +
              "PRODUCT_ART VARCHAR);");
 
             for(String d : data){
                 String[] curOrder = d.split(",");
 
-                PreparedStatement pr = connection.prepareStatement("SELECT 1 FROM `ORDERS` WHERE "+
-                "`NUM` = ?");
-                pr.setInt(1, Integer.parseInt(curOrder[0]));
-                ResultSet res = pr.executeQuery();
-                if(!res.next()){
-                    PreparedStatement orSt = connection.prepareStatement("INSERT INTO `ORDERS`(NUM,USERNAME,PRODUCT_ART) " + 
+               PreparedStatement orSt = connection.prepareStatement("INSERT INTO `ORDERS`(NUM,USERNAME,PRODUCT_ART) " + 
                                                                         "VALUES(?,?,?);");
-                    orSt.setInt(1, Integer.parseInt(curOrder[0]));
-                    orSt.setString(2, curOrder[1]);
-                    orSt.setString(3, curOrder[2]);
-                    orSt.executeUpdate();
-                }
+                orSt.setInt(1, Integer.parseInt(curOrder[0]));
+                orSt.setString(2, curOrder[1]);
+                orSt.setString(3, curOrder[2]);
+                orSt.executeUpdate();
                 
                 PreparedStatement pr1 = connection.prepareStatement("SELECT 1 FROM `PRODUCTS` WHERE " +
                 "`ART` = ?");
