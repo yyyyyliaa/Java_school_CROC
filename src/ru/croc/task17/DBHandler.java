@@ -4,7 +4,6 @@ import java.util.*;
 import java.sql.*;
 
 public abstract class DBHandler {
-    // FOREIGN KEY(PRODUCT_ART) REFERENCES PRODUCTS(ART));
 
     public static void insertData(String dbPath, String username, String password, List<String> data){
         try (Connection connection = DriverManager.getConnection(dbPath, username, password)) {
