@@ -5,7 +5,7 @@ import java.sql.*;
 
 public abstract class DBHandler {
 
-    public static void insertData(String dbPath, String username, String password, List<String> data){
+    public static void createTablesAndInsertData(String dbPath, String username, String password, List<String> data){
         try (Connection connection = DriverManager.getConnection(dbPath, username, password)) {
             final Statement statement = connection.createStatement();
 
