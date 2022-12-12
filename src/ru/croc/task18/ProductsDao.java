@@ -57,18 +57,15 @@ public class ProductsDao {
                 "`ART` = ?");
             pr1.setString(1, product.getArt());
             ResultSet rs = pr1.executeQuery();
-            if(!rs.next()){
-                pr1 = connection.prepareStatement("UPDATE PRODUCTS SET NAME = ? WHERE ART = ?;");
-                pr1.setString(1, product.getName());
-                pr1.setString(2, product.getArt());
-                pr1.execute();
+            if(rs.next()){
+                PreparedStatement pr2 = connection.prepareStatement("UPDATE `PRODUCTS` SET NAME=? WHERE ART=?");
+                pr2.setString(1, product.getName());
+                // pr2.setInt(2, product.getPrice());
+                pr2.setString(2, product.getArt());
+                pr2.execute();
 
-                pr1 = connection.prepareStatement("UPDATE PRODUCTS SET PRICE = ? WHERE ART = ?;");
-                pr1.setInt(1, product.getPrice());
-                pr1.setString(2, product.getArt());
-                pr1.execute();
 
-                return product;
+            return product;
             } else throw new ProductException("The product is not in the database");
 
         }catch (SQLException e){
@@ -80,7 +77,7 @@ public class ProductsDao {
     public void deleteProduct(String productCode){
         try (Connection connection = DriverManager.getConnection(dbPath, username, password)) {
             PreparedStatement pr1 = connection.prepareStatement("DELETE FROM ORDERS WHERE " +
-                "`ART` = ?");
+                "`PRODUCT_ART` = ?");
             pr1.setString(1, productCode);
             pr1.execute();
 
@@ -93,8 +90,4 @@ public class ProductsDao {
             e.printStackTrace();
         }   
     }
-
-
-    
-    
 }
