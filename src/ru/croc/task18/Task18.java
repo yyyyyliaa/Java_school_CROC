@@ -21,9 +21,9 @@ public class Task18 {
         DBHandler.showDB("jdbc:h2:./test", "sa", "1");
 
 
-        Product p = new Product("T2", "LOH", 10000);
+        Product p = new Product("T2", "ddd", 10000);
         try{
-            Product product = prDao.updateProduct(products.get(0));
+            Product product = prDao.updateProduct(p);
         }catch(ProductException e){
             e.getExc();
         }

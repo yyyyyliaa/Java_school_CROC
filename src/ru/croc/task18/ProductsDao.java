@@ -58,10 +58,10 @@ public class ProductsDao {
             pr1.setString(1, product.getArt());
             ResultSet rs = pr1.executeQuery();
             if(rs.next()){
-                PreparedStatement pr2 = connection.prepareStatement("UPDATE `PRODUCTS` SET NAME=? WHERE ART=?");
+                PreparedStatement pr2 = connection.prepareStatement("UPDATE `PRODUCTS` SET NAME=?, PRICE = ? WHERE ART=?");
                 pr2.setString(1, product.getName());
-                // pr2.setInt(2, product.getPrice());
-                pr2.setString(2, product.getArt());
+                pr2.setInt(2, product.getPrice());
+                pr2.setString(3, product.getArt());
                 pr2.execute();
 
 
