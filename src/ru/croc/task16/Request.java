@@ -2,12 +2,12 @@ package ru.croc.task16;
 
 import java.util.*;
 
-public class Client {
+public class Request {
     private Location location;
     private String requestType;
     private List<String> wishes;
 
-    public Client(Location location, String requestType, List<String> wishes){
+    public Request(Location location, String requestType, List<String> wishes){
         this.location = location;
         this.requestType = requestType;
         this.wishes = wishes;

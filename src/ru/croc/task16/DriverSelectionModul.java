@@ -2,8 +2,9 @@ package ru.croc.task16;
 
 import java.util.*;
 
-public abstract class DriverSelectionModul{
-
+public class DriverSelectionModul{
+    private static List<String> types = Arrays.asList("Эконом", "Комфорт", "Комфорт+", "Бизнес");
+    private static List<String> peculiarities = Arrays.asList("Детское кресло", "Опытный водитель", "Можно с животными");
     private static String[] driversRawInfo = {
         "1-60.023690,30.623611-Комфорт-Детское кресло",
         "2-60.030804,30.638130-Эконом-Детское кресло,Опытный водитель",
@@ -21,9 +22,14 @@ public abstract class DriverSelectionModul{
         "14-60.099825,30.788189-Бизнес-Детское кресло",
         "15-60.079811,30.940716-Эконом-Детское кресло,Можно с животными"
     };
-
     private  static List<Driver> drivers = driversDataProcessing();
 
+    private Request request;
+
+    public DriverSelectionModul(Request request){
+        this.request = request;
+    }
+    
     public static List<Driver> driversDataProcessing(){
         List<Driver> result = new ArrayList<>();
         Driver tmp;
@@ -35,42 +41,43 @@ public abstract class DriverSelectionModul{
             double lon = Double.parseDouble(location[1]);
 
             List<String> specials = Arrays.asList(curDriver[3].split(","));
-            tmp = new Driver(curDriver[0], new Location(lat, lon), curDriver[2], specials);
-            result.add(tmp);
+
+            if((lat>=0)&&(lon>=0)&&(types.contains(curDriver[2]))&&(peculiarities.containsAll(specials))){
+                tmp = new Driver(curDriver[0], new Location(lat, lon), curDriver[2], specials);
+                result.add(tmp);
+            }
         }
         return result;
     }
 
-    public static boolean CheckForPeculiarities(List<String> clientsRequest, Driver d){
-        List<String> driverPuculiaties = d.getPeculiaties();
-        for(String req : clientsRequest){
-            if(!driverPuculiaties.contains(req)) return false;
-        }
-        return true;
-    }
 
-    public static String SelectDriver(Client client){
+    public String selectDriver(){
         List<Driver> sortedDrivers = new ArrayList<>(drivers);
         sortedDrivers.sort((driver1, driver2)->{
-            if(driver1.getType().equals(client.getRequestType())==driver2.getType().equals(client.getRequestType())==true){
-                if(CheckForPeculiarities(client.getWishes(), driver1) == CheckForPeculiarities(client.getWishes(), driver2) == true){
-                    double driver1Distance = Location.cmp(driver1.getLocation(), client.getLocation());
-                    double driver2Distance = Location.cmp(driver2.getLocation(), client.getLocation());
+            if(driver1.getType().equals(request.getRequestType())==driver2.getType().equals(request.getRequestType())==true){
+
+                if(request.getWishes().containsAll(driver1.getPeculiaties()) == request.getWishes().containsAll(driver2.getPeculiaties()) == true){
+                    double driver1Distance = Location.cmp(driver1.getLocation(), request.getLocation());
+                    double driver2Distance = Location.cmp(driver2.getLocation(), request.getLocation());
                     if(driver1Distance==driver1Distance) return 0;
                     else{
                         if(driver1Distance>driver2Distance) return 1;
                         else return -1;
                     }
                 } else {
-                    if(CheckForPeculiarities(client.getWishes(), driver2) == true) return 1;
+                    if(request.getWishes().containsAll(driver2.getPeculiaties()) == true) return 1;
                     else return -1;
                 }
             } else{
-                if(driver2.getType().equals(client.getRequestType())==true) return 1;
+                if(driver2.getType().equals(request.getRequestType())==true) return 1;
                 else return -1;
             }
         });
-        String resultID = sortedDrivers.get(0).getID();
-        return resultID;
+        Driver suitableDriver = sortedDrivers.get(0);
+        if(suitableDriver.getPeculiaties().containsAll(request.getWishes()) && request.getRequestType().equals(suitableDriver.getType())) return suitableDriver.getID();
+        else{
+            System.out.println("Подходящего водителя не найдено");
+            return null;
+        }
     }
 }
