@@ -5,3 +5,4 @@ lib
 /.db
 test.mv.db
 task17TEST
+test.trace.db
