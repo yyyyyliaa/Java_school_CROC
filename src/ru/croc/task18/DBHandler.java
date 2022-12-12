@@ -40,7 +40,7 @@ public abstract class DBHandler {
 
                 Order t = orDao.createOrder(curOrder[1], products);
                 try{
-                    Product tmp = prDao.createProduct(p);
+                    p = prDao.createProduct(p);
                 }catch (ProductException e){
                     e.getExc();
                 }

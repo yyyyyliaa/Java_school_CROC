@@ -20,7 +20,7 @@ public class OrderDao {
         try (Connection connection = DriverManager.getConnection(dbPath, username, password)){ 
             for(Product p : products){
                 try{
-                    Product tmp = prDao.createProduct(p);
+                    p = prDao.createProduct(p);
                 }catch(ProductException e){
                     e.getExc();
                 }
