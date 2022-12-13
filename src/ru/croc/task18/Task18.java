@@ -15,7 +15,6 @@ public class Task18 {
         products.add(new Product("T1", "aaa", 100));
         products.add(new Product("T2", "bbb", 200));
         products.add(new Product("T3", "ccc", 400));
-
         Order order = orderDao.createOrder(user, products);
         System.out.println("-----------------------------------------------------------------");
         DBHandler.showDB("jdbc:h2:./test", "sa", "1");
