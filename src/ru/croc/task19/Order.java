@@ -1,37 +1,33 @@
 package ru.croc.task19;
 
 import java.util.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Order {
-    private String username;
+    private Integer userId;
     private List<Product> products;
-    private LocalDateTime deliviryTime;
+    private String deliviryTime;
     private Courier courier;
 
-    public Order(String username, List<Product> products, String deliviryTime, Courier courier){
-        this.username = username;
+    public Order(Integer userId, List<Product> products, String deliviryTime, Courier courier){
+        this.userId = userId;
         this.products = products;
         this.courier = courier;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy HH:mm:ss a");
-        this.deliviryTime = LocalDateTime.parse(deliviryTime, formatter);
+        this.deliviryTime = deliviryTime;
     }
 
-    public String getUsername(){
-        return this.username;
+    public Integer getUserId(){
+        return this.userId;
     }
 
     public List<Product> getArt(){
         return this.products;
     }
 
-    public LocalDateTime getDeliviryTime(){
+    public String getDeliviryTime(){
         return deliviryTime;
     }
 
     public Courier getCourier(){
         return this.courier;
     }
-    
 }

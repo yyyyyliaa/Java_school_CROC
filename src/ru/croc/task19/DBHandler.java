@@ -4,14 +4,15 @@ import java.sql.*;
 
 public abstract class DBHandler {
 
-    public static void createTables(String dbPath, String username, String password){
+    public static void createTabels(String dbPath, String username, String password){
         try (Connection connection = DriverManager.getConnection(dbPath, username, password)) {
             final Statement statement = connection.createStatement();
 
             statement.execute("CREATE TABLE IF NOT EXISTS PRODUCTS(ART VARCHAR PRIMARY KEY, NAME VARCHAR, PRICE INTEGER);");
-            statement.execute("CREATE TABLE IF NOT EXISTS ORDERS(NUM INTEGER PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR, " +
+            statement.execute("CREATE TABLE IF NOT EXISTS ORDERS(NUM INTEGER AUTO_INCREMENT, USER_ID INTEGER, USERNAME VARCHAR, " +
              "PRODUCT_ART VARCHAR, DELIVIRY_TIME VARCHAR, COURIER_ID INTEGER);");
             statement.execute("CREATE TABLE IF NOT EXISTS COURIERS(ID INTEGER PRIMARY KEY, NAME VARCHAR, SURNAME VARCHAR);");
+            statement.execute("CREATE TABLE IF NOT EXISTS USERS(ID INTEGER PRIMARY KEY, USERNAME VARCHAR);");
 
         } catch (SQLException e){
             e.printStackTrace();
